@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, TextField, Grid, Link } from "@mui/material";
+import { Button, Card, CardContent, TextField, Grid } from "@mui/material";
 import { useContext, useState } from "react";
 import { SetupFormContext } from "../../context/setupFormContext";
 
@@ -17,6 +17,7 @@ const PersonalForm = () => {
     const validateForm = () => {
         let valid = true
 
+        // First Name Validation
         if (!firstName){
             valid = false
             setFirstNameError("Please enter a name.")
@@ -25,6 +26,7 @@ const PersonalForm = () => {
             setFirstNameError("")
         }
 
+        // Last Name Validation
         if (!lastName){
             valid = false
             setLastNameError("Please enter a name.")
@@ -33,14 +35,21 @@ const PersonalForm = () => {
             setLastNameError("")
         }
 
+        // Phone Validation
         if (!phone){
             valid = false
             setPhoneError("Please enter a phone number.")
+        }
+        /* Regex supports formats such as 1234567890, 123-456-7890, 123 456 7890, +91 (123) 456-7890, +911234567890, etc */
+        else if (!phone.match(/^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$/g)){
+            valid = false
+            setPhoneError("Please enter a valid phone number.")
         }
         else{
             setPhoneError("")
         }
 
+        // Address Validation
         if (!address){
             valid = false
             setAddressError("Please enter an address.")
@@ -54,7 +63,23 @@ const PersonalForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        
         if (validateForm()){
+
+            // Storing form values for review and profile
+            let data = window.sessionStorage.getItem("profile-form")
+            if (data){
+                data = JSON.parse(data)
+                data.firstName = firstName
+                data.lastName = lastName
+                data.phone = phone
+                data.address = address
+                window.sessionStorage.setItem("profile-form", JSON.stringify(data))
+            }
+            else{
+                window.sessionStorage.setItem("profile-form", JSON.stringify({firstName, lastName, phone, address}))
+            }
+
             toggleNextPage()
         }
     }
