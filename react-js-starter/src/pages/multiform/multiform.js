@@ -16,17 +16,20 @@ const MultiForm = (props) => {
 
 
     const toggleNextPage = () => {
-        if (window.sessionStorage.setItem("form-step") <= page){
-            window.sessionStorage.setItem("form-step", page + 1)
-        }
         if (page < 3){
+            if (window.sessionStorage.getItem("form-step") <= page){
+                window.sessionStorage.setItem("form-step", page + 1)
+            }
             setPage(page + 1)
+
+            navigate("/setup/" + (page+1))
         }
     }
 
     const togglePreviousPage = () => {
         if (page > 0){
             setPage(page - 1)
+            navigate("/setup/" + (page-1))
         }
     }
 
@@ -43,7 +46,7 @@ const MultiForm = (props) => {
                     window.sessionStorage.setItem("form-step", step)
                 }
                 else{
-                    // Redirect to current step if input step 
+                    // Redirect to current step if input step is not within bounds
                     setPage(parseInt(currentStep))
                     navigate("/setup/" + currentStep)
                 }
@@ -92,9 +95,9 @@ const MultiForm = (props) => {
             <SetupFormContext.Provider value={{toggleNextPage, togglePreviousPage}}>
                 {
                     {
-                        '1': <PersonalForm/>,
-                        '2': <PokedexForm/>,
-                        '3': <ReviewForm/>
+                        1: <PersonalForm/>,
+                        2: <PokedexForm/>,
+                        3: <ReviewForm/>
                     }[page]
                 }
             </SetupFormContext.Provider>
