@@ -38,12 +38,11 @@ const MultiForm = (props) => {
         if (window){
             let currentStep = window.sessionStorage.getItem("form-step")
 
-            if (step && parseInt(step)){
+            if (currentStep && parseInt(currentStep)){
 
                 // prevent step from url to be ahead of current step or non existent page
                 if (step && parseInt(step) && parseInt(currentStep) >= parseInt(step) && parseInt(step) >= 1){
                     setPage(parseInt(step))
-                    window.sessionStorage.setItem("form-step", step)
                 }
                 else{
                     // Redirect to current step if input step is not within bounds
