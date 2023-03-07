@@ -1,6 +1,7 @@
 import { Button, Card, CardContent, TextField, Grid } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SetupFormContext } from "../../context/setupFormContext";
+import ProfileFormStepper from "./profileFormStepper";
 
 const PersonalForm = () => {
 
@@ -84,20 +85,35 @@ const PersonalForm = () => {
         }
     }
 
+    useEffect(()=>{
+        // Populate form based on previous entered data
+        if (window){
+            let data = window.sessionStorage.getItem("profile-form")
+            if (data){
+                data = JSON.parse(data)
+                setFirstName(data.firstName)
+                setLastName(data.lastName)
+                setPhone(data.phone)
+                setAddress(data.address)
+            }
+        }
+    }, [])
+
     return (
         <Card variant="outlined" sx={{minWidth:250, marginTop:3, border:'3px solid'}}>
             <CardContent sx={{justifyContent:"center", textAlign:'center'}}>
+                <ProfileFormStepper/>
                 <form onSubmit={handleSubmit}>
                     {/* Text Field Input */}
                     <Grid container spacing={2} direction="column" sx={{justifyContent:"center", marginTop:"5px"}}>
-                        <TextField label="First Name" variant="outlined" onChange={e => setFirstName(e.target.value)} error={firstNameError.length > 0} helperText={firstNameError} sx={{margin:2}}/>
-                        <TextField label="Last Name" variant="outlined" onChange={e => setLastName(e.target.value)} error={lastNameError.length > 0} helperText={lastNameError} sx={{margin:2}}/>
-                        <TextField label="Phone Number" variant="outlined" onChange={e => setPhone(e.target.value)} error={phoneError.length > 0} helperText={phoneError} sx={{margin:2}}/>
-                        <TextField label="Address" variant="outlined" onChange={e => setAddress(e.target.value)} error={addressError.length > 0} helperText={addressError} sx={{margin:2}}/>
+                        <TextField label="First Name" variant="outlined" value={firstName} onChange={e => setFirstName(e.target.value)} error={firstNameError.length > 0} helperText={firstNameError} sx={{margin:2}}/>
+                        <TextField label="Last Name" variant="outlined" value={lastName} onChange={e => setLastName(e.target.value)} error={lastNameError.length > 0} helperText={lastNameError} sx={{margin:2}}/>
+                        <TextField label="Phone Number" variant="outlined" value={phone} onChange={e => setPhone(e.target.value)} error={phoneError.length > 0} helperText={phoneError} sx={{margin:2}}/>
+                        <TextField label="Address" variant="outlined" value={address} onChange={e => setAddress(e.target.value)} error={addressError.length > 0} helperText={addressError} sx={{margin:2}}/>
                     </Grid>
                     
                     {/* buttons */}
-                    <Grid container spacing={2} sx={{justifyContent:"center", marginTop:"5px"}}>
+                    <Grid container spacing={2} sx={{justifyContent:"right", marginTop:"5px"}}>
                         <Grid item>
                             <Button variant="contained" type="submit">
                                 Next

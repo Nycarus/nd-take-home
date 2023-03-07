@@ -91,7 +91,7 @@ const MultiForm = (props) => {
 
     return (
         <Layout>
-            <SetupFormContext.Provider value={{toggleNextPage, togglePreviousPage}}>
+            <SetupFormContext.Provider value={{page, toggleNextPage, togglePreviousPage}}>
                 {
                     {
                         1: <PersonalForm/>,
