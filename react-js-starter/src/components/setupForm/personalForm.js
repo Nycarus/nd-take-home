@@ -68,17 +68,17 @@ const PersonalForm = () => {
         if (validateForm()){
 
             // Storing form values for review and profile
-            let data = window.sessionStorage.getItem("profile-form")
+            let data = window.localStorage.getItem("profile-form")
             if (data){
                 data = JSON.parse(data)
                 data.firstName = firstName
                 data.lastName = lastName
                 data.phone = phone
                 data.address = address
-                window.sessionStorage.setItem("profile-form", JSON.stringify(data))
+                window.localStorage.setItem("profile-form", JSON.stringify(data))
             }
             else{
-                window.sessionStorage.setItem("profile-form", JSON.stringify({firstName, lastName, phone, address}))
+                window.localStorage.setItem("profile-form", JSON.stringify({firstName, lastName, phone, address}))
             }
 
             toggleNextPage()
@@ -88,7 +88,7 @@ const PersonalForm = () => {
     useEffect(()=>{
         // Populate form based on previous entered data
         if (window){
-            let data = window.sessionStorage.getItem("profile-form")
+            let data = window.localStorage.getItem("profile-form")
             if (data){
                 data = JSON.parse(data)
                 setFirstName(data.firstName)
