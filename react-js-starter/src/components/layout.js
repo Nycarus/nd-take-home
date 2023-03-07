@@ -1,5 +1,5 @@
 import React from "react"
-import { AppBar, Toolbar, Typography } from "@mui/material"
+import { AppBar, Container, Link, Toolbar, Typography } from "@mui/material"
 
 const Layout = (props) => {
     return(
@@ -7,7 +7,7 @@ const Layout = (props) => {
             <AppBar position="static">
                 <Toolbar>
                     {/* Title */}
-                    <Typography variant="h6" nowrap component="a" href="/">
+                    <Typography variant="h6" component={Link} href="/" sx={{textDecoration: "none", color:"white"}}>
                         PokeDex Form
                     </Typography>
 
@@ -16,9 +16,9 @@ const Layout = (props) => {
             </AppBar>
 
             {/* Body */}
-            <div>
+            <Container maxWidth="sm">
                 {props.children}
-            </div>
+            </Container>
             
         </React.Fragment>
     )

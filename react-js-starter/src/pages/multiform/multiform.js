@@ -1,10 +1,19 @@
+import { Card, CardContent, CircularProgress, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 import Layout from "../../components/layout"
+import PersonalForm from "../../components/setupForm/personalForm"
+import PokedexForm from "../../components/setupForm/pokedexForm"
+import ReviewForm from "../../components/setupForm/reviewForm"
+import { SetupFormContext } from "../../context/setupFormContext"
 
 const MultiForm = (props) => {
-    const [page, setPage] = useState(null)
+    const [page, setPage] = useState(0)
     const [isLoading, setLoading] = useState(true)
     const [isError, setError] = useState(false)
+    const {step} = useParams()
+    const navigate = useNavigate()
+
 
     const toggleNextPage = () => {
         if (window.sessionStorage.setItem("form-step") <= page){
@@ -24,21 +33,23 @@ const MultiForm = (props) => {
     useEffect(()=>{
         // initialize page value
         if (window){
-            let step = window.sessionStorage.getItem("form-step")
+            let currentStep = window.sessionStorage.getItem("form-step")
 
             if (step && parseInt(step)){
 
-                // Checking if user changed the URL to move to a previous form step/page, but not forward
-                if (props.match.params.step && parseInt(props.match.params.step) && parseInt(step) >= parseInt(props.match.params.step)){
-                    setPage(parseInt(props.match.params.step))
-                    window.sessionStorage.setItem("form-step", props.match.params.step)
+                // prevent step from url to be ahead of current step or non existent page
+                if (step && parseInt(step) && parseInt(currentStep) >= parseInt(step) && parseInt(step) >= 1){
+                    setPage(parseInt(step))
+                    window.sessionStorage.setItem("form-step", step)
                 }
                 else{
-                    setPage(parseInt(step))
+                    // Redirect to current step if input step 
+                    setPage(parseInt(currentStep))
+                    navigate("/setup/" + currentStep)
                 }
             }
             else{
-                window.sessionStorage.setItem("form-step", "0")
+                window.sessionStorage.setItem("form-step", "1")
             }
 
             setLoading(false)
@@ -52,7 +63,11 @@ const MultiForm = (props) => {
         return(
             <Layout>
                 <React.Fragment>
-                    Error
+                    <Card variant="outlined" sx={{minWidth:250, marginTop:3, border:"3px solid"}}>
+                        <CardContent>
+                            <Typography>Something Went Wrong!</Typography>
+                        </CardContent>
+                    </Card>
                 </React.Fragment>
             </Layout>
         )
@@ -62,7 +77,11 @@ const MultiForm = (props) => {
         return(
             <Layout>
                 <React.Fragment>
-                    Loading
+                    <Card variant="outlined" sx={{minWidth:250, marginTop:3, border:'3px solid'}}>
+                        <CardContent sx={{display: 'flex', justifyContent: 'center'}}>
+                            <CircularProgress/>
+                        </CardContent>
+                    </Card>
                 </React.Fragment>
             </Layout>
         )
@@ -70,10 +89,15 @@ const MultiForm = (props) => {
 
     return (
         <Layout>
-            <React.Fragment>
-                {props.children}
-                Test
-            </React.Fragment>
+            <SetupFormContext.Provider value={{toggleNextPage, togglePreviousPage}}>
+                {
+                    {
+                        '1': <PersonalForm/>,
+                        '2': <PokedexForm/>,
+                        '3': <ReviewForm/>
+                    }[page]
+                }
+            </SetupFormContext.Provider>
         </Layout>
     )
 }
