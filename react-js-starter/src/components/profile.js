@@ -1,13 +1,13 @@
-import { Card, CardContent, Button, Grid, Typography, TextField } from "@mui/material"
+import { Card, CardContent, Grid, Typography, TextField } from "@mui/material"
 
 const Profile = ({firstName, lastName, address, phone, pokemonName, pokemonImg}) => {
     return (
         <Grid container direction="row" sx={{justifyContent:"center", marginTop:"20px"}}>
             {/* Pokemon */}
-            <Card sx={{display: "flex", flexGrow: 1, border: '1px solid', borderRadius: '10px 0 0 10px', width:125, justifyContent:"center"}}>
+            <Card sx={{display: "flex", flexGrow: 1, border: '1px solid', borderRadius: '0', width:125, justifyContent:"center"}}>
                 <CardContent sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <Grid container direction="column">
-                        <img src={pokemonImg}></img>
+                        <img src={pokemonImg} alt="pokemon img"></img>
                         <Typography sx={{textAlign:"center"}}>
                             {pokemonName}
                         </Typography>
@@ -16,7 +16,7 @@ const Profile = ({firstName, lastName, address, phone, pokemonName, pokemonImg})
             </Card>
 
             {/* Profile Info */}
-            <Card sx={{display: "flex", flexGrow: 1, border: '1px solid', borderRadius: '0 10px 10px 0', width:"auto"}}>
+            <Card sx={{display: "flex", flexGrow: 1, border: '1px solid', borderRadius: '0', width:"auto"}}>
                 <CardContent>
                     <Grid container spacing={1} direction="column" sx={{justifyContent:"center"}}>
                         <Grid item>
