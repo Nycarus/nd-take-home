@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import Layout from "../../components/layout"
 import PersonalForm from "../../components/setupForm/personalForm"
-import PokedexForm from "../../components/setupForm/pokedexForm"
+import PokedexForm from "../../components/setupForm/pokedexForm/pokedexForm"
 import ReviewForm from "../../components/setupForm/reviewForm"
 import { SetupFormContext } from "../../context/setupFormContext"
 
