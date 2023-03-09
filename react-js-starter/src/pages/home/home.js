@@ -1,15 +1,21 @@
 import { Button, Card, CardContent, Typography, Grid, Link } from "@mui/material";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../components/layout";
+import Profile from "../../components/profile";
 
 const Home = () => {
     const [currentPage, setCurrentPage] = useState(null)
+    const [profile, setProfile] = useState({})
 
-    useLayoutEffect(()=>{
+    useEffect(()=>{
         if (window){
-            let step = window.sessionStorage.getItem("form-step")
+            let step = window.localStorage.getItem("form-step")
             if (step && parseInt(step)) {
                 setCurrentPage(parseInt(step))
+            }
+
+            if (window.localStorage.getItem("profile")){
+                setProfile(JSON.parse(window.localStorage.getItem("profile")))
             }
         }
     }, [])
@@ -37,6 +43,10 @@ const Home = () => {
                     </Grid>
                 </CardContent>
             </Card>
+
+            {
+                Object.keys(profile).length != 0 && <Profile {...profile}/>
+            }
         </Layout>
     )
 }

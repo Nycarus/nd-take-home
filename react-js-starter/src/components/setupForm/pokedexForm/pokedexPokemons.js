@@ -7,10 +7,16 @@ const elementsPerPagination = 20
 const PokedexPokemons = (props) => {
     const [pokemonIndex, setPokemonIndex] = useState(20)
     const [pokemonPreviousIndex, setPreviousPokemonIndex] = useState(0)
+    const observer = useRef()
+
+    useEffect(()=>{
+        setPokemonIndex(elementsPerPagination)
+        setPreviousPokemonIndex(0)
+    }, [props.pokemons])
 
     const {pokemonInfo, loading, error, hasMore} = PokemonInfoQuery(props.pokemons, pokemonIndex, pokemonPreviousIndex)
 
-    const observer = useRef()
+
     const lastPokemonRef = useCallback(node => {
         if (loading) {
             return
@@ -31,11 +37,6 @@ const PokedexPokemons = (props) => {
             observer.current.observe(node)
         }
     })
-
-    useEffect(()=>{
-        setPokemonIndex(elementsPerPagination)
-        setPreviousPokemonIndex(0)
-    }, [props.pokemons])
 
     if (error){
         console.log(error)
@@ -78,7 +79,7 @@ const PokedexPokemons = (props) => {
                         :
                         <Typography>Search pokemon to display.</Typography>
                     }
-                    
+
                     {
                         // Loading bar
                         loading && <CircularProgress/>

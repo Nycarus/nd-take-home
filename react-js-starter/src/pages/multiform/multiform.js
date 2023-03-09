@@ -14,7 +14,6 @@ const MultiForm = (props) => {
     const {step} = useParams()
     const navigate = useNavigate()
 
-
     const toggleNextPage = () => {
         if (page < 3){
             if (window.sessionStorage.getItem("form-step") <= page){
